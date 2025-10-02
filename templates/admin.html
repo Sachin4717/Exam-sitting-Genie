@@ -7,15 +7,15 @@
 
 <div class="row mb-4">
     <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
-                <h3 class="card-title">{{ student_count }}</h3>
-                <p class="card-text text-muted">Students</p>
-            </div>
-        </div>
+        <div class="card text-center border-start border-primary border-5 h-100">
+    <div class="card-body">
+        <h3 class="card-title">{{ student_count }}</h3> 
+        <p class="card-text text-muted">Students</p>
+    </div>
+</div>
     </div>
     <div class="col-md-3">
-        <div class="card text-center">
+        <div class="card text-center border-start border-info border-5 h-100">
             <div class="card-body">
                 <h3 class="card-title">{{ room_count }}</h3>
                 <p class="card-text text-muted">Rooms</p>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card text-center">
+        <div class="card text-center border-start border-success border-5 h-100">
             <div class="card-body">
                 <h3 class="card-title">{{ allocation_count }}</h3>
                 <p class="card-text text-muted">Allocations</p>
@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card text-center">
+        <div class="card text-center border-start border-warning border-5 h-100">
             <div class="card-body">
                 <h3 class="card-title" id="utilization">0%</h3>
                 <p class="card-text text-muted">Utilization</p>
@@ -78,9 +78,9 @@
                     <option value="rollwise">Roll-wise Sequential</option>
                     <option value="random">Random</option>
                 </select>
-                <button class="btn btn-success btn-lg w-100" onclick="generateAllocation()">
-                    <i class="bi bi-stars"></i> Generate Seating Plan
-                </button>
+                <button class="btn btn-success btn-lg w-100 generate-btn-shadow" onclick="generateAllocation()">
+    <i class="bi bi-stars"></i> Generate Seating Plan
+</button>
             </div>
         </div>
 
