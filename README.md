@@ -1,78 +1,122 @@
-# Seat Allocator System
+# 🎓 Exam Sitting Genie
 
-## 📌 Overview
-Seat Allocator is an automated system designed to assign examination seats to students efficiently and fairly. It eliminates manual seat planning by using structured logic to allocate seats based on available exam halls and student data.
-
-This project was developed as part of a **hackathon**, focusing on real-world academic examination challenges.
+Exam Sitting Genie is a **smart and automated exam seating allocation system** designed to eliminate manual errors and save administrative time. The system efficiently assigns students to available seats in examination halls based on predefined constraints, ensuring fairness, accuracy, and optimal utilization of space.
 
 ---
 
-## 🎯 Objectives
-- Automate the exam seat allocation process  
-- Reduce human errors in manual seating plans  
-- Ensure fair and conflict-free seat distribution  
-- Save time for academic administrators  
+## 🚀 Key Features
 
----
-
-## 🧩 Problem Statement
-Manual seat allocation during examinations is time-consuming, error-prone, and difficult to manage for large numbers of students. The Seat Allocator system addresses this issue by generating a systematic seating arrangement automatically.
-
----
-
-## ⚙️ Key Features
-- Student data-based seat assignment  
-- Handles multiple exam halls and seat capacities  
-- Prevents duplicate or conflicting seat allocation  
-- Fast and scalable for large datasets  
+- 🔢 **Automated Seat Allocation** – Assigns seats automatically based on student and hall data  
+- 🏫 **Multiple Exam Hall Support** – Handles multiple rooms with different seating capacities  
+- 👨‍🎓 **Student Data Management** – Stores and processes student details securely  
+- 🪑 **Seat Optimization** – Ensures maximum utilization of available seats  
+- 📄 **Exam-wise Allocation** – Generates seating plans for specific exams  
+- ⚡ **Time Efficient** – Reduces hours of manual work to seconds  
+- 🔒 **Error-Free Process** – Minimizes duplication and allocation conflicts  
 
 ---
 
 ## 🛠️ Tech Stack
-- **Backend / Logic:** Python  
-- **Data Handling:** CSV / Database (as applicable)  
-- **Algorithm:** Rule-based seat distribution  
 
-*(Tech stack can be customized or extended)*
-
----
-
-## 🧠 How It Works
-1. Input student details (roll number, course, subject, etc.)
-2. Input exam hall details (room number, total seats)
-3. System processes data using allocation logic
-4. Final seating plan is generated automatically
+- **Frontend:** HTML, CSS, Bootstrap  
+- **Backend:** Python (Django)  
+- **Database:** SQLite / PostgreSQL  
+- **Tools:** Git, GitHub  
 
 ---
 
-## 🚀 Use Cases
-- Colleges and universities during examinations  
-- Competitive exams seating management  
-- Academic administration automation  
+## 📂 Project Structure
+
+```
+Exam-Sitting-Genie/
+│
+├── manage.py
+├── requirements.txt
+├── README.md
+├── students/
+├── halls/
+├── allocation/
+├── templates/
+├── static/
+└── db.sqlite3
+```
 
 ---
 
-## 🏆 Hackathon Context
-- Developed during a **National-Level Hackathon**
-- Focused on solving a real-world academic problem
-- Demonstrated strong logic building and teamwork
+## ⚙️ Installation & Setup
+
+Follow these steps to run the project locally:
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/your-username/exam-sitting-genie.git
+cd exam-sitting-genie
+```
+
+### 2️⃣ Create Virtual Environment
+```bash
+python -m venv venv
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+```
+
+### 3️⃣ Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4️⃣ Run Migrations
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 5️⃣ Start the Server
+```bash
+python manage.py runserver
+```
+
+Visit **http://127.0.0.1:8000/** in your browser.
 
 ---
 
-## 📈 Future Enhancements
-- Web-based UI for administrators  
-- PDF/Excel export of seating plans  
-- Conflict detection and optimization  
-- Integration with student information systems  
+## 📌 Use Case
+
+- Colleges & Universities  
+- Schools & Training Institutes  
+- Competitive Exam Centers  
 
 ---
 
-## 👨‍💻 Author
+## 🏆 Project Highlights
+
+- Developed as part of a **hackathon project**
+- Focused on **automation, efficiency, and scalability**
+- Practical solution for real-world examination management problems
+
+---
+
+## 🤝 Future Enhancements
+
+- PDF export of seating arrangements  
+- Admin dashboard with analytics  
+- Role-based authentication  
+- Cloud deployment support  
+
+---
+
+## 📬 Contact
+
 **Sachin Kumar**  
-Final Year BCA Student  
-Hackathon Winner  
+📧 Email: sachin@example.com  
+🔗 GitHub: https://github.com/Sachin4717  
 
 ---
 
 ## 📄 License
-This project is for educational and demonstration purposes.
+
+This project is licensed under the **MIT License**.  
+You are free to use, modify, and distribute this software.
+
+---
+
+⭐ If you find this project useful, please consider giving it a star!
