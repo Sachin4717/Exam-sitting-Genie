@@ -6,6 +6,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.platypus import Table, TableStyle
+from reportlab.lib.utils import ImageReader
 import pandas as pd
 from database import get_all_allocations, get_allocation_by_roll, get_student_by_roll
 from datetime import datetime
@@ -62,18 +63,29 @@ def generate_admit_card_pdf(roll_no, output_path):
     
     qr_data = f"Roll: {allocation['roll_no']} | Room: {allocation['room_no']} | Seat: {allocation['seat_number']}"
     qr_buffer = generate_qr_code(qr_data)
+    qr_image = ImageReader(qr_buffer)
     
     qr_x = width / 2 - 1 * inch
     qr_y = 2 * inch
-    c.drawImage(qr_buffer, qr_x, qr_y, width=2 * inch, height=2 * inch, mask='auto')
+    # c.drawImage(qr_buffer, qr_x, qr_y, width=2 * inch, height=2 * inch, mask='auto')
     
+    # c.setFont("Helvetica-Oblique", 10)
+    c.drawImage(qr_image, qr_x, qr_y, width=2 * inch, height=2 * inch, mask='auto') 
+
     c.setFont("Helvetica-Oblique", 10)
     c.drawCentredString(width / 2, 1.5 * inch, "Scan QR code for verification")
     
+    # ... existing code ...
+    
+    # 🟢 FIX: Border ko pura draw karein
     c.rect(0.5 * inch, 0.5 * inch, width - 1 * inch, height - 1 * inch, stroke=1, fill=0)
     
+    # 🟢 FIX: Instruction ki starting Y-position ko upar rakhein (e.g., 1.5 inch)
+    y_inst_start = 1.5 * inch 
+
     c.setFont("Helvetica-Bold", 10)
-    c.drawString(1 * inch, 0.8 * inch, "Important Instructions:")
+    c.drawString(1 * inch, y_inst_start, "Important Instructions:")
+    
     c.setFont("Helvetica", 9)
     instructions = [
         "1. Bring this admit card to the examination hall",
@@ -81,14 +93,15 @@ def generate_admit_card_pdf(roll_no, output_path):
         "3. Carry a valid ID proof",
         "4. Mobile phones and electronic devices are not allowed"
     ]
-    y_inst = 0.6 * inch
+    
+    # 🟢 FIX: Instructions ko Border ke andar adjust karein
+    y_inst = y_inst_start - 0.25 * inch 
     for instruction in instructions:
         c.drawString(1 * inch, y_inst, instruction)
-        y_inst -= 0.15 * inch
-    
+        y_inst -= 0.15 * inch # Line spacing
+
     c.save()
     return True
-
 def generate_all_admit_cards():
     allocations = get_all_allocations()
     

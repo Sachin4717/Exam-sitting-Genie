@@ -28,6 +28,31 @@ def clear_allocations():
     conn.commit()
     conn.close()
 
+def insert_user(username, password_hash):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''
+            INSERT INTO users (username, password_hash, is_admin)
+            VALUES (?, ?, 1) -- Naye user ko pehle se hi Admin bana rahe hain
+        ''', (username, password_hash))
+        conn.commit()
+        conn.close()
+        return True
+    except sqlite3.IntegrityError:
+        # Username pehle se maujood hai
+        conn.close()
+        return False
+
+def get_user_by_username(username):
+    conn = get_connection()
+    cursor = conn.cursor()
+    user = cursor.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+    conn.close()
+    return user
+
+
+
 def insert_students(df):
     conn = get_connection()
     cursor = conn.cursor()
@@ -50,14 +75,43 @@ def insert_rooms(df):
     cursor = conn.cursor()
     
     for _, row in df.iterrows():
+        # try:
+        #     cursor.execute('''
+        #         INSERT INTO rooms (room_no, building, rows, columns, capacity)
+        #         VALUES (?, ?, ?, ?, ?)
+        #     ''', (str(row['Room No']), str(row['Building']), int(row['Rows']), 
+        #           int(row['Columns']), int(row['Capacity'])))
+        # except sqlite3.IntegrityError:
+        #     pass
         try:
+            # Apne file ke exact column names yahan use karein (e.g., 'Room No')
+            room_no = str(row['Room No']).strip()
+            building = str(row['Building']).strip()
+            
+            # Data type ko int mein convert karte samay error aa sakta hai
+            rows = int(row['Rows'])
+            columns = int(row['Columns'])
+            capacity = int(row['Capacity'])
+
             cursor.execute('''
                 INSERT INTO rooms (room_no, building, rows, columns, capacity)
                 VALUES (?, ?, ?, ?, ?)
-            ''', (str(row['Room No']), str(row['Building']), int(row['Rows']), 
-                  int(row['Columns']), int(row['Capacity'])))
+            ''', (room_no, building, rows, columns, capacity))
+            
         except sqlite3.IntegrityError:
+            # Agar Room No duplicate hai, toh skip kar do
             pass
+        except KeyError as e:
+            # Column name mismatch error
+            print(f"KeyError in insert_rooms. Please check column names. Missing: {e}")
+            conn.close()
+            return
+        except ValueError as e:
+            # Data type error (Non-numeric value in Rows/Columns/Capacity)
+            print(f"ValueError in insert_rooms (Row {index + 2}). Non-numeric data found: {e}")
+            conn.close()
+            return
+
     
     conn.commit()
     conn.close()
@@ -143,11 +197,14 @@ def log_activity(activity_type, description):
     conn.close()
 
 def validate_students_file(df):
+    df.columns = df.columns.str.strip() 
     required_columns = ['Roll No', 'Name', 'Course/Program', 'Semester', 'Email', 'Subject Code']
     missing_columns = [col for col in required_columns if col not in df.columns]
     
     if missing_columns:
-        return False, f"Missing columns: {', '.join(missing_columns)}"
+        present_cols = list(df.columns)
+        return False, f"Missing columns: {', '.join(missing_columns)}. File has: {', '.join(present_cols)}"
+    
     
     if df['Roll No'].duplicated().any():
         duplicates = df[df['Roll No'].duplicated()]['Roll No'].tolist()
@@ -155,18 +212,25 @@ def validate_students_file(df):
     
     return True, "Valid"
 
+
+
 def validate_rooms_file(df):
+    df.columns = df.columns.str.strip()
     required_columns = ['Room No', 'Building', 'Rows', 'Columns', 'Capacity']
+    
     missing_columns = [col for col in required_columns if col not in df.columns]
     
     if missing_columns:
-        return False, f"Missing columns: {', '.join(missing_columns)}"
+        # ✅ FIX: present_cols ko missing_columns ke upar define kiya gaya hai
+        present_cols = list(df.columns) 
+        return False, f"Missing columns: {', '.join(missing_columns)}. File has: {', '.join(present_cols)}"
     
     if df['Room No'].duplicated().any():
-        duplicates = df[df['Room No'].duplicated()]['Room No'].tolist()
+        duplicates = df[df['Room No'].duplicated()]['Roll No'].tolist()
         return False, f"Duplicate room numbers found: {', '.join(map(str, duplicates[:5]))}"
     
     return True, "Valid"
+
 
 def check_capacity():
     conn = get_connection()
